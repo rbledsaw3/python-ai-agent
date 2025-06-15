@@ -1,4 +1,5 @@
 import os
+import sys
 from google import genai
 from dotenv import load_dotenv
 
@@ -10,11 +11,15 @@ def print_response(response):
 
 def main():
     load_dotenv()
+    if len(sys.argv) != 2:
+        print("Usage: python main.py \"<PROMPT>\"")
+        sys.exit(1)
+    prompt = sys.argv[1]
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
-        contents="Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
+        contents=prompt
     )
     print_response(response)
 
